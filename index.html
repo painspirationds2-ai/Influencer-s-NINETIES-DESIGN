@@ -824,21 +824,47 @@ async function sendToSheet(){
   const btn=document.getElementById('sendBtn');
   const note=document.getElementById('resNote');
   const p=getP();
-  const data={
-    timestamp:new Date().toLocaleString('th-TH'),
-    nick:A['a_nick']||'',social:A['a_social']||'',personality:p.type,mbti:A['a_mbti']||'',
-    loc:A['loc']||'',status:A['s1_status']||'',vibe:A['vibe']||'',recharge:A['recharge']||'',
-    decide:A['decide']||'',limit:A['a_limit']||'',style:A['style']||'',
-    aesthetic:A['a_aesthetic']||'',
-    watch:(([A['a_watch1'],A['a_watch2'],A['a_watch3']]).filter(Boolean).join(' | '))||'',
-    goal_influ:(([A['a_goali1'],A['a_goali2'],A['a_goali3']]).filter(Boolean).join(' | '))||'',
-    cam_score:A['cam_score']||'',
-    consume:A['g_consume']||'',platform:A['platform']||'',freeday:A['freeday']||'',
-    daily:A['a_daily']||'',content:A['g_content']||'',edit_app:A['g_edit_app']||'',
-    photo_app:A['g_photo_app']||'',ai_use:A['ai_use']||'',ai_tools:A['g_ai_tools']||'',
-    nolike:A['nolike']||'',gear:A['g_gear']||'',shoot:A['shoot']||'',live:A['live']||'',
-    time:A['g_time']||'',best:A['a_best']||'',strength:A['a_strength']||'',
-    help:A['help']||'',goal:A['goal']||'',note:A['a_note']||'',
+  const data = {
+    timestamp: new Date().toLocaleString('th-TH'),
+    nick: A['a_nick'] || '',
+    social: A['a_social'] || '',
+    personality: p.type,
+    mbti: A['a_mbti'] || '',
+    // --- สองตัวนี้คือที่หายไปและต้องมี เพื่อให้จังหวัดขึ้น ---
+    loc: A['loc'] || '', 
+    province: document.getElementById('a_province')?.value || '', 
+    // ----------------------------------------------
+    status: A['s1_status'] || '',
+    vibe: A['vibe'] || '',
+    recharge: A['recharge'] || '',
+    decide: A['decide'] || '',
+    limit: A['a_limit'] || '',
+    style: A['style'] || '',
+    aesthetic: A['a_aesthetic'] || '',
+    watch: (([A['a_watch1'], A['a_watch2'], A['a_watch3']]).filter(Boolean).join(' | ')) || '',
+    goal_influ: (([A['a_goali1'], A['a_goali2'], A['a_goali3']]).filter(Boolean).join(' | ')) || '',
+    // --- ตัวนี้คือคะแนนหน้ากล้อง ต้องสะกดตามนี้เป๊ะๆ ---
+    cam_score: A['cam_score'] || '', 
+    // ----------------------------------------------
+    consume: A['g_consume'] || '',
+    platform: A['platform'] || '',
+    freeday: A['freeday'] || '',
+    daily: A['a_daily'] || '',
+    content: A['g_content'] || '',
+    edit_app: A['g_edit_app'] || '',
+    photo_app: A['g_photo_app'] || '',
+    ai_use: A['ai_use'] || '',
+    ai_tools: A['g_ai_tools'] || '',
+    nolike: A['nolike'] || '',
+    gear: A['g_gear'] || '',
+    shoot: A['shoot'] || '',
+    live: A['live'] || '',
+    time: A['g_time'] || '',
+    best: A['a_best'] || '',
+    strength: A['a_strength'] || '',
+    help: A['help'] || '',
+    goal: A['goal'] || '',
+    note: A['a_note'] || ''
   };
   document.getElementById('ov').classList.add('show');
   btn.disabled=true;
@@ -856,45 +882,3 @@ async function sendToSheet(){
     note.textContent='มีปัญหา กรุณา screenshot หน้านี้แล้วส่งให้ทีมด้วยนะครับ';
   }
 }
-
-renderProg();
-</script>
-<!--
-วิธีเชื่อม Google Sheet:
-1. เปิด Sheet ID: 1BnQODDvbtMuZTFOdUqlQ_TKBHrgjEzH8FjeovPDjGKI
-2. Extensions → Apps Script → วาง code นี้:
-
-function doPost(e){
-  try{
-    const ss=SpreadsheetApp.openById("1BnQODDvbtMuZTFOdUqlQ_TKBHrgjEzH8FjeovPDjGKI");
-    let sh=ss.getSheetByName("🐢 Creator Profile");
-    if(!sh) sh=ss.insertSheet("🐢 Creator Profile");
-    if(sh.getLastRow()===0){
-      sh.appendRow(["Timestamp","ชื่อเล่น","Social","บุคลิก","MBTI","จังหวัด","สถานะ","Vibe","ชาร์จพลัง","ตัดสินใจ","ข้อจำกัด","สไตล์","Vibe ตัวเอง","เสพ Influencer","อยากเป็นแบบ","Content เสพ","Platform","Free Day","ชีวิตประจำวัน","Content ที่ทำ","แอพตัดต่อ","แอพแต่งรูป","ใช้ AI","AI ทำอะไร","Uncomfortable","อุปกรณ์","พื้นที่อยู่","Live","เวลาว่าง","Content ดัง","จุดแข็ง","แบรนด์ช่วย","เป้าหมาย","ฝากบอก","คะแนนพูดหน้ากล้อง"]);
-      const hRow=sh.getRange(1,1,1,35);
-      hRow.setBackground("#B71C1C").setFontColor("#FFFFFF").setFontWeight("bold");
-      sh.setFrozenRows(1);
-    }
-    const d=JSON.parse(e.postData.contents);
-    const loc=d.loc+(d.province?" ("+d.province+")":"");
-    sh.appendRow([
-      d.timestamp,d.nick,d.social,d.personality,d.mbti,
-      loc,d.status,d.vibe,d.recharge,d.decide,d.limit,
-      d.style,d.aesthetic,d.watch,d.goal_influ,
-      d.consume,d.platform,d.freeday,d.daily,
-      d.content,d.edit_app,d.photo_app,d.ai_use,d.ai_tools,
-      d.nolike,d.gear,d.shoot,d.live,d.time,
-      d.best,d.strength,d.help,d.goal,d.note,
-      d.cam_score
-    ]);
-    return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);
-  }catch(err){
-    return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.toString()})).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-3. Deploy → Web app → Execute as: Me → Anyone → Deploy → Copy URL
-4. วาง URL แทน YOUR_SCRIPT_ID_HERE ในไฟล์นี้
--->
-</body>
-</html>
