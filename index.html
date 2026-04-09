@@ -215,7 +215,7 @@ body{font-family:'Noto Sans Thai',sans-serif;background:var(--paper);color:var(-
     <button class="ch" data-g="s1_status" data-v="ทำงานประจำ" onclick="pick(this)"><span class="chi">💼</span><div class="cht"><div class="chm">ทำงานประจำ</div></div><div class="chd"></div></button>
     <button class="ch" data-g="s1_status" data-v="Freelance" onclick="pick(this)"><span class="chi">💻</span><div class="cht"><div class="chm">Freelance / งานอิสระ</div></div><div class="chd"></div></button>
     <button class="ch" data-g="s1_status" data-v="ทำ Content เป็นหลัก" onclick="pick(this)"><span class="chi">🎬</span><div class="cht"><div class="chm">ทำ Content เป็นหลัก</div></div><div class="chd"></div></button>
-  </div></div>
+  </div></div></div>
 
   <div class="nav"><button class="bnx" onclick="go(2)">ถัดไป →</button></div>
 </div>
@@ -855,3 +855,45 @@ async function sendToSheet(){
     note.textContent='มีปัญหา กรุณา screenshot หน้านี้แล้วส่งให้ทีมด้วยนะครับ';
   }
 }
+
+renderProg();
+</script>
+<!--
+วิธีเชื่อม Google Sheet:
+1. เปิด Sheet ID: 1BnQODDvbtMuZTFOdUqlQ_TKBHrgjEzH8FjeovPDjGKI
+2. Extensions → Apps Script → วาง code นี้:
+
+function doPost(e){
+  try{
+    const ss=SpreadsheetApp.openById("1BnQODDvbtMuZTFOdUqlQ_TKBHrgjEzH8FjeovPDjGKI");
+    let sh=ss.getSheetByName("🐢 Creator Profile");
+    if(!sh) sh=ss.insertSheet("🐢 Creator Profile");
+    if(sh.getLastRow()===0){
+      sh.appendRow(["Timestamp","ชื่อเล่น","Social","บุคลิก","MBTI","จังหวัด","สถานะ","Vibe","ชาร์จพลัง","ตัดสินใจ","ข้อจำกัด","สไตล์","Vibe ตัวเอง","เสพ Influencer","อยากเป็นแบบ","Content เสพ","Platform","Free Day","ชีวิตประจำวัน","Content ที่ทำ","แอพตัดต่อ","แอพแต่งรูป","ใช้ AI","AI ทำอะไร","Uncomfortable","อุปกรณ์","พื้นที่อยู่","Live","เวลาว่าง","Content ดัง","จุดแข็ง","แบรนด์ช่วย","เป้าหมาย","ฝากบอก","คะแนนพูดหน้ากล้อง"]);
+      const hRow=sh.getRange(1,1,1,35);
+      hRow.setBackground("#B71C1C").setFontColor("#FFFFFF").setFontWeight("bold");
+      sh.setFrozenRows(1);
+    }
+    const d=JSON.parse(e.postData.contents);
+    const loc=d.loc+(d.province?" ("+d.province+")":"");
+    sh.appendRow([
+      d.timestamp,d.nick,d.social,d.personality,d.mbti,
+      loc,d.status,d.vibe,d.recharge,d.decide,d.limit,
+      d.style,d.aesthetic,d.watch,d.goal_influ,
+      d.consume,d.platform,d.freeday,d.daily,
+      d.content,d.edit_app,d.photo_app,d.ai_use,d.ai_tools,
+      d.nolike,d.gear,d.shoot,d.live,d.time,
+      d.best,d.strength,d.help,d.goal,d.note,
+      d.cam_score
+    ]);
+    return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);
+  }catch(err){
+    return ContentService.createTextOutput(JSON.stringify({status:"error",msg:err.toString()})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+3. Deploy → Web app → Execute as: Me → Anyone → Deploy → Copy URL
+4. วาง URL แทน YOUR_SCRIPT_ID_HERE ในไฟล์นี้
+-->
+</body>
+</html>
