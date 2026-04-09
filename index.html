@@ -830,11 +830,10 @@ async function sendToSheet(){
     social: A['a_social'] || '',
     personality: p.type,
     mbti: A['a_mbti'] || '',
-    // --- สองตัวนี้คือที่หายไปและต้องมี เพื่อให้จังหวัดขึ้น ---
     loc: A['loc'] || '', 
     province: document.getElementById('a_province')?.value || '', 
-    // ----------------------------------------------
     status: A['s1_status'] || '',
+    // ----------------------------
     vibe: A['vibe'] || '',
     recharge: A['recharge'] || '',
     decide: A['decide'] || '',
@@ -843,9 +842,7 @@ async function sendToSheet(){
     aesthetic: A['a_aesthetic'] || '',
     watch: (([A['a_watch1'], A['a_watch2'], A['a_watch3']]).filter(Boolean).join(' | ')) || '',
     goal_influ: (([A['a_goali1'], A['a_goali2'], A['a_goali3']]).filter(Boolean).join(' | ')) || '',
-    // --- ตัวนี้คือคะแนนหน้ากล้อง ต้องสะกดตามนี้เป๊ะๆ ---
     cam_score: A['cam_score'] || '', 
-    // ----------------------------------------------
     consume: A['g_consume'] || '',
     platform: A['platform'] || '',
     freeday: A['freeday'] || '',
@@ -864,7 +861,7 @@ async function sendToSheet(){
     strength: A['a_strength'] || '',
     help: A['help'] || '',
     goal: A['goal'] || '',
-    note: A['a_note'] || ''
+    note: A['a_note'] || '',
   };
   document.getElementById('ov').classList.add('show');
   btn.disabled=true;
